@@ -1,4 +1,4 @@
-const {set, get} = require('./cache')
+const {set, get, del} = require('./cache')
 
 test(`Testing 'set' to add new entry to the cache`, () => {
   set('day', 'friday')
@@ -19,4 +19,13 @@ test(`Testing ephimeral with 'get' from previous test to be gone`, () => {
     const ephimeralVal = get('ephimeral')
     expect(ephimeralVal).toBe(undefined)
   }, 500)
+})
+
+test(`Testing non-existant entry with 'get' to be undefined `, () => {
+  expect(get('shoudlnotexists')).toBe(undefined)
+})
+
+test(`Testing deleting the existing 'day' entry`, () => {
+  del('day')
+  expect(get('day')).toBe(undefined)
 })
