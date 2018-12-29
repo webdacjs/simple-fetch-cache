@@ -1,6 +1,6 @@
 const nfetch = require('node-fetch')
 const {set, get} = require('./cache')
-const headersSubSetKeys = ['server', 'date', 'content-type', 'content-lengh']
+const headersSubSetKeys = ['server', 'date', 'content-type', 'content-length']
 
 const getHeadersSubset = headers => Object.keys(headers)
   .filter((key) => headersSubSetKeys.indexOf(key) >= 0)
