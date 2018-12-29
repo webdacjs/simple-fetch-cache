@@ -1,12 +1,18 @@
 const nfetch = require('node-fetch')
 const {set, get} = require('./cache')
+const headersSubSetKeys = ['server', 'date', 'content-type', 'content-lengh']
+
+const getHeadersSubset = headers => Object.keys(headers)
+  .filter((key) => headersSubSetKeys.indexOf(key) >= 0)
+  .reduce((subset, key) => Object.assign(
+    subset, { [key]: headers[key] }), {})
 
 const fetchLive = url => {
   return nfetch(url)
     .then(r => {
       return {
         buffer: r.buffer(),
-        headers: r.headers.raw(),
+        headers: getHeadersSubset(r.headers.raw()),
         type: r.headers.get('content-type'),
         status: r.status
       }
