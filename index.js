@@ -6,16 +6,14 @@ const fetchLive = url => {
     .then(r => {
       return {
         buffer: r.buffer(),
+        headers: r.headers.raw(),
         type: r.headers.get('content-type'),
         status: r.status
       }
     })
 }
 
-const renderContent = (buffer, mtype, checkIsCached) => {
-  if (checkIsCached) {
-    return true
-  }
+const renderContent = (buffer, mtype) => {
   if (mtype.includes('text/html')) {
     return buffer.toString('utf-8')
   } else if (mtype.includes('application/json')) {
@@ -24,20 +22,20 @@ const renderContent = (buffer, mtype, checkIsCached) => {
   return buffer
 }
 
-const cacheRenderBuffer = (url, replyObj, ttl) => {
-  const {status} = replyObj
-  delete replyObj.status
-  if (status === 200) {
-    set(url, replyObj, ttl)
-  }
-  return replyObj.buffer.then(x => renderContent(x, replyObj.type))
+const cacheRenderBuffer = (url, replyObj, ttl, cached = false) => {
+  if (replyObj.status === 200 && !cached) set(url, replyObj, ttl)
+  return replyObj.buffer.then(x => ({
+    reply: renderContent(x, replyObj.type),
+    headers: replyObj.headers,
+    status: replyObj.status,
+    cached
+  }))
 }
 
-const fetch = (url, ttl, checkIsCached) => {
+const fetch = (url, ttl) => {
   return get(url)
     ? Promise.resolve(get(url))
-      .then(r => r.buffer
-      .then(buffer => renderContent(buffer, r.type, checkIsCached)))
+      .then(r => cacheRenderBuffer(url, r, null, true))
     : fetchLive(url)
       .then(r => cacheRenderBuffer(url, r, ttl))
 }
@@ -47,5 +45,6 @@ const fetchFresh = (url, ttl) => fetchLive(url)
 
 module.exports = {
   fetch,
+  fetchLive,
   fetchFresh
 }
