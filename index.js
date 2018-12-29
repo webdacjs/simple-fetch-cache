@@ -11,7 +11,10 @@ const fetchLive = url => {
     })
 }
 
-const renderContent = (buffer, mtype) => {
+const renderContent = (buffer, mtype, checkIsCached) => {
+  if (checkIsCached) {
+    return true
+  }
   if (mtype.includes('text/html')) {
     return buffer.toString('utf-8')
   } else if (mtype.includes('application/json')) {
@@ -25,11 +28,11 @@ const cacheRenderBuffer = (url, replyObj, ttl) => {
   return replyObj.buffer.then(x => renderContent(x, replyObj.type))
 }
 
-const fetch = (url, ttl) => {
+const fetch = (url, ttl, checkIsCached) => {
   return get(url)
     ? Promise.resolve(get(url))
       .then(r => r.buffer
-      .then(buffer => renderContent(buffer, r.type)))
+      .then(buffer => renderContent(buffer, r.type, checkIsCached)))
     : fetchLive(url)
       .then(r => cacheRenderBuffer(url, r, ttl))
 }
