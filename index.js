@@ -51,6 +51,5 @@ const fetchFresh = (url, ttl) => fetchLive(url)
 
 module.exports = {
   fetch,
-  fetchLive,
   fetchFresh
 }
