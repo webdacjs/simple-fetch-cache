@@ -1,6 +1,6 @@
 {
   "name": "simple-fetch-cache",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "A simple fetch module using node-fetch, offering some basic caching functionality.",
   "main": "index.js",
   "scripts": {
