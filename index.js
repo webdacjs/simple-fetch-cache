@@ -6,7 +6,8 @@ const fetchLive = url => {
     .then(r => {
       return {
         buffer: r.buffer(),
-        type: r.headers.get('content-type')
+        type: r.headers.get('content-type'),
+        status: r.status
       }
     })
 }
@@ -24,7 +25,11 @@ const renderContent = (buffer, mtype, checkIsCached) => {
 }
 
 const cacheRenderBuffer = (url, replyObj, ttl) => {
-  set(url, replyObj, ttl)
+  const {status} = replyObj
+  delete replyObj.status
+  if (status === 200) {
+    set(url, replyObj, ttl)
+  }
   return replyObj.buffer.then(x => renderContent(x, replyObj.type))
 }
 
