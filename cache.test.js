@@ -10,7 +10,7 @@ test(`Testing persitance with 'get' from previous test`, () => {
 })
 
 test(`Testing 'set' to add new entry to the cache`, () => {
-  set('ephimeral', 'shouldberemovedsoon', 1)
+  set('ephimeral', 'shouldberemovedsoon', 100)
   expect(get('ephimeral')).toBe('shouldberemovedsoon')
 })
 
