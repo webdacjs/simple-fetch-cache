@@ -1,11 +1,21 @@
 {
   "name": "simple-fetch-cache",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A simple fetch module using node-fetch, offering some basic caching functionality.",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdacjs/simple-fetch-cache.git"
+  },
+  "keywords": [
+    "fetch",
+    "cache",
+    "http",
+    "promise"
+  ],
   "author": "Juan Convers",
   "license": "MIT",
   "dependencies": {
