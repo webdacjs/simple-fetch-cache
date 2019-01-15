@@ -1,5 +1,5 @@
 const nfetch = require('node-fetch')
-const {set, get} = require('./cache')
+const {set, get} = require('simple-map-cache')
 const headersSubSetKeys = ['server', 'date', 'content-type', 'content-length']
 
 const getHeadersSubset = headers => Object.keys(headers)
