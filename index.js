@@ -20,9 +20,9 @@ const fetchLive = url => {
 }
 
 const renderContent = (buffer, mtype) => {
-  if (mtype.includes('text/html')) {
+  if ((mtype || '').includes('text/html')) {
     return buffer.toString('utf-8')
-  } else if (mtype.includes('application/json')) {
+  } else if ((mtype || '').includes('application/json')) {
     return JSON.parse(buffer.toString('utf-8'))
   }
   return buffer
