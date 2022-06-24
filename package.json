@@ -19,7 +19,7 @@
   "author": "Juan Convers",
   "license": "MIT",
   "dependencies": {
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.7",
     "simple-map-cache": "1.0.0"
   },
   "devDependencies": {
