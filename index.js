@@ -1,5 +1,6 @@
 const nfetch = require('node-fetch')
-const {set, get} = require('simple-map-cache')
+const NodeCache = require('node-cache');
+const cache = new NodeCache();
 const headersSubSetKeys = ['server', 'date', 'content-type', 'content-length']
 
 const getHeadersSubset = headers => Object.keys(headers)
@@ -29,7 +30,7 @@ const renderContent = (buffer, mtype) => {
 }
 
 const cacheRenderBuffer = (url, replyObj, ttl, cached = false) => {
-  if (replyObj.status === 200 && !cached) set(url, replyObj, ttl)
+  if (replyObj.status === 200 && !cached) cache.set(url, replyObj, ttl)
   return replyObj.buffer.then(x => ({
     reply: renderContent(x, replyObj.type),
     headers: replyObj.headers,
@@ -39,8 +40,8 @@ const cacheRenderBuffer = (url, replyObj, ttl, cached = false) => {
 }
 
 const fetch = (url, ttl) => {
-  return get(url)
-    ? Promise.resolve(get(url))
+  return cache.get(url)
+    ? Promise.resolve(cache.get(url))
       .then(r => cacheRenderBuffer(url, r, null, true))
     : fetchLive(url)
       .then(r => cacheRenderBuffer(url, r, ttl))
